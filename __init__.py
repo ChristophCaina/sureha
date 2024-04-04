@@ -179,22 +179,8 @@ class SurePetcareAPI:
         _LOGGER.info(" \x1b[38;2;255;26;102m·\x1b[0m" * 30)
         _LOGGER.info("")
 
-        self.hass.async_add_job(
-            self.hass.config_entries.async_forward_entry_setup(  # type: ignore
-                self.config_entry, "binary_sensor"
-            )
-        )
-
-        self.hass.async_add_job(
-            self.hass.config_entries.async_forward_entry_setup(  # type: ignore
-                self.config_entry, "sensor"
-            )
-        )
-
-        self.hass.async_add_job(
-            self.hass.config_entries.async_forward_entry_setup(  # type: ignore
-                self.config_entry, "device_tracker"
-            )
+        await self.hass.config_entries.async_forward_entry_setups(
+            self.config_entry, PLATFORMS
         )
 
         surepy_entities: list[SurepyEntity] = self.coordinator.data.values()
